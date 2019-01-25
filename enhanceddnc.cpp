@@ -10,6 +10,10 @@ using namespace std;
 struct point{
 	int x;
 	int y;
+	bool operator==(const point& p)
+	{
+		return (x==p.x && y==p.y);
+	}
 };
 
 struct point_pair{
@@ -17,10 +21,10 @@ struct point_pair{
 	point b;
 };
 
-point_pair pair_arr[10000];
+point_pair pair_arr[100000];
 int  pair_size=0;
 
-void readfile(string input_file,point* p){
+int readfile(string input_file,point* p){
 	ifstream myfile (input_file.c_str());
 	string line;
 	int j=0;
@@ -45,6 +49,7 @@ void readfile(string input_file,point* p){
 		}
 		myfile.close();
 	}
+	return j;
 }
 
 void merge(point arr[], int l, int m, int r,char axis) 
@@ -140,12 +145,13 @@ float get_distance(point p1,point p2){
 }
 
 float cloest_cross_pair(point* middle,float dmin,int size){
+	float fd=dmin;
 	for(int i=0;i<size;i++){
 		int j=i+1;
-		while(middle[j].y-middle[i].y<=dmin and j<size){
+		while((middle[j].y-middle[i].y)<=dmin and j<size){
 			float d=get_distance(middle[i],middle[j]);
-			if(d<=dmin){
-				dmin=d;
+			if(d<=fd){
+				fd=d;
 				pair_arr[pair_size].a=middle[i];
 				pair_arr[pair_size].b=middle[j];
 				pair_size++;
@@ -153,7 +159,7 @@ float cloest_cross_pair(point* middle,float dmin,int size){
 			j++;
 		}
 	}
-	return dmin;
+	return fd;
 }
 
 float closet_pair(point *p,int size){
@@ -224,23 +230,48 @@ float closet_pair(point *p,int size){
 	}
 }
 
+bool pairExist(point_pair* arr,int size,point a,point b){
+	if(size==0){
+		return false;
+	}
+	for(int i=0;i<size;i++){
+		if(arr[i].a==a && arr[i].b==b){
+			//cout<<1<<endl;
+			return true;
+		}
+		if(arr[i].a==b && arr[i].b==a){
+			//cout<<1<<endl;
+			return true;
+		}
+	}
+	//cout<<0<<endl;
+	return false;
+}
+
 int main(int argc,char **argv){
 	string input_file=argv[1];
-	point p[1000];
-	readfile(input_file,p);	
-	float dim=closet_pair(p,1000);
+	point p[100000];
+	point_pair final_result[100];
+	int result_size=0;
+	int size=readfile(input_file,p);	
+	float dim=closet_pair(p,size);
 	ofstream myfile;
 	myfile.open("result.txt");
 	myfile<<dim<<endl;
-	cout<<pair_size<<endl;
+	// cout<<pair_size<<endl;
 	for(int i=0;i<pair_size;i++)
 	{
 		float d=get_distance(pair_arr[i].a,pair_arr[i].b);
-		//cout<<d<<endl;
+		//cout<<"("<<pair_arr[i].a.x<<","<<pair_arr[i].a.y<<"), ";
+		//cout<<"("<<pair_arr[i].b.x<<","<<pair_arr[i].b.y<<")"<<endl;
 		if(d-dim<0.00001 && d-dim>-0.00001){
-			myfile<<"("<<pair_arr[i].a.x<<","<<pair_arr[i].a.y<<"), ";
-			myfile<<"("<<pair_arr[i].b.x<<","<<pair_arr[i].b.y<<")"<<endl;
-			
+			final_result[result_size].a=pair_arr[i].a;
+			final_result[result_size].b=pair_arr[i].b;
+			if(!pairExist(final_result,result_size,pair_arr[i].a,pair_arr[i].b)){
+				myfile<<"("<<pair_arr[i].a.x<<","<<pair_arr[i].a.y<<"), ";
+				myfile<<"("<<pair_arr[i].b.x<<","<<pair_arr[i].b.y<<")"<<endl;
+			}
+			result_size++;
 		}
 	}
 	myfile.close();
