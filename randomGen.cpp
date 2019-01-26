@@ -3,6 +3,7 @@
 #include<set>
 #include<iterator>
 #include<time.h>
+#include<fstream>
 
 using namespace std;
 
@@ -18,24 +19,24 @@ int main(int argc,char** argv){
         int x,y,x0,x1,y0,y1;
         int size = atoi(argv[1]);
         //     int candidates[size];
-        struct point pointset[size];
+        struct point pointset[size];                    //array to store the generated points
 
 
-        set <int> xIndex;
+        set <int> xIndex;                               //two sets to pust the random num use to test the uniqueness of the random variable
         set <int> yIndex;
 
         srand(time(NULL));
 
 
         while(i < size){
-                x0 = xIndex.size();
+                x0 = xIndex.size();                     //random generate an unique x 
                 do{
                         x = rand() % size;
                         xIndex.insert(x);
                         x1 = xIndex.size();
                 }while(x0 == x1);
 
-                y0 = yIndex.size();
+                y0 = yIndex.size();                     //random generate an unique x 
                 do{
                         y = rand() % size;
                         yIndex.insert(y);
@@ -46,12 +47,12 @@ int main(int argc,char** argv){
                 pointset[i].y = y;
                 i++;
 
-                cout << x << "\t" << y << endl;
+                // cout << x << "\t" << y << endl;
         }
         
 
         
-        // printPoints(pointset,size);
+        printPoints(pointset,size);                 //print points to a file
 
 
 
@@ -59,16 +60,16 @@ int main(int argc,char** argv){
 }
 
 void printPoints(point* pointset,int size){
-
-        for(int i=0;i<size;i++){
-                cout << pointset[i].x << "\t" << pointset[i].y;
-
-                if((i+1)%2 == 0)
-                        cout << endl;
-                else
-                        cout << "\t";
-                
-
+        ofstream myfile;
+        myfile.open("pointSet.txt");
+        if(myfile.is_open()){
+                for(int i = 0;i < size;i++){
+                        myfile << pointset[i].x << " " << pointset[i].y << endl;
+                }
         }
+        else{
+                cout << "Fail to open the file. " << endl;
+        }
+
 
 }
