@@ -4,7 +4,8 @@
 #include<fstream>
 #include<cmath>
 #include<vector>
-#include <sys/time.h>
+#include<time.h>
+
 using namespace std;
 
 struct point{
@@ -51,20 +52,24 @@ int readfile(string input_file,point* p){
 // Pre-requirements: The file must exist in the same directory
 // Post-requirements: A array with struct point will returned
 int main(int argc,char** argv){
+	clock_t start, end;
+	double cpu_time_used;
+
+
 	string input_file=argv[1];
 	point p[1000000];
 	int size=readfile(input_file,p);	
-  typedef struct timeval time;
-  time stop, start;
-  gettimeofday(&start, NULL);
+	
+	start = clock();
 	struct Result result = findClosestPair(p,size);
-  gettimeofday(&stop, NULL);
-  if(stop.tv_sec > start.tv_sec)
-    cout << "Seconds: " << stop.tv_sec-start.tv_sec << endl;
-  else
-    cout << "Micro: " << stop.tv_usec-start.tv_usec << endl;
- 
-	printResult(&result);  
+	end = clock();
+	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	cout << cpu_time_used << endl;
+
+	printResult(&result);
+
+
+
 }
 
 
@@ -117,9 +122,10 @@ struct Result findClosestPair(point* candidates,int size){
 // post-requirement: contents of the result will printed out 
 
 void printResult(Result* result){
-  int i,size = result -> closePoints.size();
+	int i,size = result -> closePoints.size();
 	printf("%0.2lf\n",result->distance);
 	for(i=0;i<size -1;i+=2){
 		cout<<result -> closePoints[i].x << "\t" << result->closePoints[i].y << "\t" << result->closePoints[i+1].x <<"\t" << result->closePoints[i+1].y <<endl;
 	}
+
 }
