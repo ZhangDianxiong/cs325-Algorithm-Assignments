@@ -4,6 +4,7 @@
 #include<fstream>
 #include<cmath>
 #include<vector>
+#include<time.h>
 
 using namespace std;
 
@@ -51,11 +52,23 @@ int readfile(string input_file,point* p){
 // Pre-requirements: The file must exist in the same directory
 // Post-requirements: A array with struct point will returned
 int main(int argc,char** argv){
+	clock_t start, end;
+	double cpu_time_used;
+
+
 	string input_file=argv[1];
 	point p[1000000];
 	int size=readfile(input_file,p);	
+	
+	start = clock();
 	struct Result result = findClosestPair(p,size);
+	end = clock();
+	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+	cout << cpu_time_used << endl;
+
 	printResult(&result);
+
+
 
 }
 
