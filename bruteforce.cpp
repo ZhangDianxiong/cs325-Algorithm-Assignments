@@ -130,7 +130,7 @@ void printResult(Result* result){
 	if (myfile.is_open()){
 		myfile << result -> distance << endl;
 		for(i=0;i<size -1;i+=2){
-			myfile <<result -> closePoints[i].x << " " << result->closePoints[i].y << " " << result->closePoints[i+1].x <<" " << result->closePoints[i+1].y <<endl;
+			myfile << "(" << result -> closePoints[i].x << "," << result->closePoints[i].y << "), (" << result->closePoints[i+1].x <<"," << result->closePoints[i+1].y <<")"<<endl;
 		}		
 
 	}
