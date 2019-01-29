@@ -77,7 +77,8 @@ int main(int argc,char** argv){
 // Post-requirement: A struct type result who contain mindistance and related pairs will returned
 
 struct Result findClosestPair(point* candidates,int size){
-	int i,j,dist;
+	int i,j;
+	double dist;
 	struct Result result;
 	double x0 = candidates[0].x;
 	double y0 = candidates[0].y;
@@ -123,7 +124,7 @@ struct Result findClosestPair(point* candidates,int size){
 
 void printResult(Result* result){
 	int i,size = result -> closePoints.size();
-	printf("%0.2lf\n",result->distance);
+	printf("%0.12lf\n",result->distance);
 	for(i=0;i<size -1;i+=2){
 		cout<<result -> closePoints[i].x << "\t" << result->closePoints[i].y << "\t" << result->closePoints[i+1].x <<"\t" << result->closePoints[i+1].y <<endl;
 	}
