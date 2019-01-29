@@ -123,10 +123,22 @@ struct Result findClosestPair(point* candidates,int size){
 // post-requirement: contents of the result will printed out 
 
 void printResult(Result* result){
+	ofstream myfile;
+	myfile.open("result.txt");
 	int i,size = result -> closePoints.size();
-	printf("%0.12lf\n",result->distance);
-	for(i=0;i<size -1;i+=2){
-		cout<<result -> closePoints[i].x << "\t" << result->closePoints[i].y << "\t" << result->closePoints[i+1].x <<"\t" << result->closePoints[i+1].y <<endl;
+	if (myfile.is_open()){
+		myfile << result -> distance << endl;
+		for(i=0;i<size -1;i+=2){
+			myfile <<result -> closePoints[i].x << " " << result->closePoints[i].y << " " << result->closePoints[i+1].x <<" " << result->closePoints[i+1].y <<endl;
+		}		
+
 	}
+	else{
+		cout << "Fail to open a file. " << endl;
+	}
+	// printf("%0.12lf\n",result->distance);
+	// for(i=0;i<size -1;i+=2){
+	// 	cout<<result -> closePoints[i].x << "\t" << result->closePoints[i].y << "\t" << result->closePoints[i+1].x <<"\t" << result->closePoints[i+1].y <<endl;
+	// }
 
 }
