@@ -31,14 +31,14 @@ int main(int argc,char** argv){
         while(i < size){
                 x0 = xIndex.size();                     //random generate an unique x 
                 do{
-                        x = rand() % size;
+                        x = rand() % (size*10);
                         xIndex.insert(x);
                         x1 = xIndex.size();
                 }while(x0 == x1);
 
                 y0 = yIndex.size();                     //random generate an unique x 
                 do{
-                        y = rand() % size;
+                        y = rand() % (size*10);
                         yIndex.insert(y);
                         y1 = yIndex.size();
 

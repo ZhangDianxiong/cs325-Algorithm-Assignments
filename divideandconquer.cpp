@@ -22,7 +22,7 @@ struct point_pair{
 	point b;
 };
 
-point_pair pair_arr[1000000];
+point_pair pair_arr[200000];
 int  pair_size=0;
 
 int readfile(string input_file,point* p){
@@ -163,32 +163,37 @@ float cloest_cross_pair(point* left,int n1,point* right,int n2,float dmin){
 
 float closet_pair(point *p,int size){
 	if(size<=3){
-		float d1=get_distance(p[0],p[1]);
-		float d2=get_distance(p[1],p[2]);
-		float d3=d1+d2;
-		float dmin1=min(d1,d2);
-		if(size==3){
-			d3=get_distance(p[0],p[2]);
-			dmin1=min(dmin1,d3);
-		}
-		if(dmin1==d1){
+		float d1,d2,d3,dmin1;
+		d1=get_distance(p[0],p[1]);
+		if(size==2){
 			pair_arr[pair_size].a=p[0];
-			pair_arr[pair_size].b=p[1];
-			pair_size++;
+		 	pair_arr[pair_size].b=p[1];
+		 	pair_size++;
+			return d1;
 		}
-		if(dmin1==d2){
-			pair_arr[pair_size].a=p[1];
-			pair_arr[pair_size].b=p[2];
-			pair_size++;
-		}
-		if(size==3){
-			if(dmin1==d3){
+		else{
+			d1=get_distance(p[0],p[1]);
+			d2=get_distance(p[1],p[2]);
+			d3=get_distance(p[0],p[2]);
+			dmin1=min(d1,d2);
+			dmin1=min(dmin1,d3);
+			if(dmin1==d1){
 				pair_arr[pair_size].a=p[0];
+				pair_arr[pair_size].b=p[1];
+				pair_size++;
+			}
+			if(dmin1==d2){
+				pair_arr[pair_size].a=p[1];
 				pair_arr[pair_size].b=p[2];
 				pair_size++;
 			}
+			if(dmin1==d3){
+					pair_arr[pair_size].a=p[0];
+					pair_arr[pair_size].b=p[2];
+					pair_size++;
+			}
+			return dmin1;
 		}
-		return dmin1;
 	}
 	else
 	{
@@ -233,20 +238,20 @@ bool pairExist(point_pair* arr,int size,point a,point b){
 int main(int argc,char **argv){
 
 	string input_file=argv[1];
-	point p[1000000];
-	point_pair final_result[10000];
+	point p[200000];
+	point_pair final_result[200000];
 	int result_size=0;
 	int size=readfile(input_file,p);	
  
-  typedef struct timeval time;
-  time stop, start;
-  gettimeofday(&start, NULL);
+	typedef struct timeval time;
+	time stop, start;
+	gettimeofday(&start, NULL);
 	float dim=closet_pair(p,size);
-  gettimeofday(&stop, NULL);
-  if(stop.tv_sec > start.tv_sec)
-    cout << "Seconds: " << stop.tv_sec-start.tv_sec << endl;
-  else
-    cout << "Micro: " << stop.tv_usec-start.tv_usec << endl; 
+	gettimeofday(&stop, NULL);
+	if(stop.tv_sec > start.tv_sec)
+		cout << "Seconds: " << stop.tv_sec-start.tv_sec << endl;
+	else
+		cout << "Micro: " << stop.tv_usec-start.tv_usec << endl; 
     
 	ofstream myfile;
 	myfile.open("result.txt");
