@@ -197,7 +197,6 @@ float closet_pair(point *p,int size){
 	}
 	else
 	{
-		mergeSort(p,0,size-1,'x');//sort in x-axis
 		int medin=size/2;
 		int n1=medin,n2=size-medin;
 		point left[n1],right[n2];
@@ -242,7 +241,7 @@ int main(int argc,char **argv){
 	point_pair final_result[200000];
 	int result_size=0;
 	int size=readfile(input_file,p);	
- 
+	mergeSort(p,0,size-1,'x');//sort in x-axis
 	typedef struct timeval time;
 	time stop, start;
 	gettimeofday(&start, NULL);
