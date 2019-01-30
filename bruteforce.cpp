@@ -125,7 +125,7 @@ struct Result findClosestPair(point* candidates,int size){
 
 void printResult(Result* result){
 	ofstream myfile;
-	myfile.open("result.txt");
+	myfile.open("output.txt");
 	int i,size = result -> closePoints.size();
 	if (myfile.is_open()){
 		myfile << result -> distance << endl;
