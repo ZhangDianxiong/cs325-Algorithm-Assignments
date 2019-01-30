@@ -66,6 +66,7 @@ void printPoints(point* pointset,int size){
                 for(int i = 0;i < size;i++){
                         myfile << pointset[i].x << " " << pointset[i].y << endl;
                 }
+                cout<<"all the points are in pointSet.txt file"<<endl;
         }
         else{
                 cout << "Fail to open the file. " << endl;

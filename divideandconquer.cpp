@@ -253,7 +253,7 @@ int main(int argc,char **argv){
 		cout << "Micro: " << stop.tv_usec-start.tv_usec << endl; 
     
 	ofstream myfile;
-	myfile.open("result.txt");
+	myfile.open("output.txt");
 	myfile<<dim<<endl;
 	// cout<<pair_size<<endl;
 	for(int i=0;i<pair_size;i++)
