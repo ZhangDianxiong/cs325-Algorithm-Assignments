@@ -3,7 +3,7 @@ Assignment repository  for  CS325 Algorithm
 
 Members:
 Dianxiong Zhang 932994919
-Chen Yuhang 933190490
+Yuhang Chen 933190490
 
 How to compile: 
 chmod +x Makefile
@@ -12,7 +12,7 @@ Makefile
 How to use:
 bruteforce <--file name>
 divideandconquer <--file name>
-enhanceddnc <--file name>    (All those three files will have runtime prsented one it finish the execution, the shortest distance and related pairs will dump into a file called result.txt)
+enhanceddnc <--file name>    (All those three files will have runtime prsented one it finish the execution, the shortest distance and related pairs will dump into a file called output.txt)
 randomGen x (x can be any positive non-zero integer) pointSet.txt who cantained random points will generated.
 
 Tips & something should stay Alert:
