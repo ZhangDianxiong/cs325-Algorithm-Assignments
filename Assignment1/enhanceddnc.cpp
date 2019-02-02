@@ -233,7 +233,7 @@ float closet_pair(point *p,int size){
 			}
 			index++;
 		}
-		mergeSort(middle,0,size_middle-1,'y');
+		// mergeSort(middle,0,size_middle-1,'y');
 		dmin2=cloest_cross_pair(middle,dmin2,size_middle);
 		return dmin2;
 	}
@@ -265,6 +265,7 @@ int main(int argc,char **argv){
 	int result_size=0;
 	int size=readfile(input_file,p);	
 	mergeSort(p,0,size-1,'x');//sort in x-axis
+	mergeSort(p,0,size-1,'y');
   	typedef struct timeval time;
   	time stop, start;
   	gettimeofday(&start, NULL);

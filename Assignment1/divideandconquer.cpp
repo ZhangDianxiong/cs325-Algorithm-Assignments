@@ -4,7 +4,9 @@
 #include<fstream>
 #include<string>
 #include <algorithm> 
+#include<ctime>
 #include <sys/time.h>
+
 using namespace std;
 
 
@@ -145,20 +147,22 @@ float get_distance(point p1,point p2){
 	return sqrt(pow(p1.x-p2.x,2)+pow(p1.y-p2.y,2));
 }
 
-float cloest_cross_pair(point* left,int n1,point* right,int n2,float dmin){
-    float result=dmin;
-	for(int i=0;i<n1;i++){
-        for(int j=0;j<n2;j++){
-            float d=get_distance(right[i],left[j]);
-            if(d<=result){
-                result=d;
-                pair_arr[pair_size].a=right[i];
-			    pair_arr[pair_size].b=left[j];
-			    pair_size++;
-            }
-        }
-    }
-    return result;
+float cloest_cross_pair(point* middle,float dmin,int size){
+	float fd=dmin;
+	for(int i=0;i<size;i++){
+		int j=i+1;
+		while((middle[j].y-middle[i].y)<=dmin and j<size){
+			float d=get_distance(middle[i],middle[j]);
+			if(d<=fd){
+				fd=d;
+				pair_arr[pair_size].a=middle[i];
+				pair_arr[pair_size].b=middle[j];
+				pair_size++;
+			}
+			j++;
+		}
+	}
+	return fd;
 }
 
 float closet_pair(point *p,int size){
@@ -199,7 +203,9 @@ float closet_pair(point *p,int size){
 	{
 		int medin=size/2;
 		int n1=medin,n2=size-medin;
-		point left[n1],right[n2];
+		point *left=new point[n1];
+		point *right=new point[n2];
+		//point left[n1],right[n2];
 		for(int i=0;i<n1;i++){
 			left[i]=p[i];
 		}
@@ -210,8 +216,25 @@ float closet_pair(point *p,int size){
 		float dL=closet_pair(left,n1);
 		float dR=closet_pair(right,n2);
 		float dmin2=min(dL,dR);
-		dmin2=cloest_cross_pair(left,n1,right,n2,dmin2);
-        //cout<<dmin2<<endl;
+
+		float low=p[medin].x-dmin2;
+		float high=p[medin].x+dmin2;
+		int index=0,size_middle=0;
+		point *middle=new point[200000];
+		while(index<size){
+			int x=p[index].x;
+			if(x>=low and x<=high){
+				middle[size_middle]=p[index];
+				//cout<<middle[size_middle].x<<endl;
+				size_middle++;
+			}
+			else if(x>high){
+				break;
+			}
+			index++;
+		}
+		mergeSort(middle,0,size_middle-1,'y');
+		dmin2=cloest_cross_pair(middle,dmin2,size_middle);
 		return dmin2;
 	}
 }
@@ -235,23 +258,23 @@ bool pairExist(point_pair* arr,int size,point a,point b){
 }
 
 int main(int argc,char **argv){
-
+  
 	string input_file=argv[1];
 	point p[200000];
 	point_pair final_result[200000];
 	int result_size=0;
 	int size=readfile(input_file,p);	
 	mergeSort(p,0,size-1,'x');//sort in x-axis
-	typedef struct timeval time;
-	time stop, start;
-	gettimeofday(&start, NULL);
+  	typedef struct timeval time;
+  	time stop, start;
+  	gettimeofday(&start, NULL);
 	float dim=closet_pair(p,size);
-	gettimeofday(&stop, NULL);
-	if(stop.tv_sec > start.tv_sec)
-		cout << "Seconds: " << stop.tv_sec-start.tv_sec << endl;
-	else
-		cout << "Micro: " << stop.tv_usec-start.tv_usec << endl; 
-    
+  	gettimeofday(&stop, NULL);
+  	if(stop.tv_sec > start.tv_sec)
+    	cout << "Seconds: " << stop.tv_sec-start.tv_sec << endl;
+  	else
+    	cout << "Micro: " << stop.tv_usec-start.tv_usec << endl;
+
 	ofstream myfile;
 	myfile.open("output.txt");
 	myfile<<dim<<endl;
@@ -272,6 +295,4 @@ int main(int argc,char **argv){
 		}
 	}
 	myfile.close();
-  
-  return 0;
 }
